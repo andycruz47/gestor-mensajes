@@ -1,0 +1,5 @@
+venv
+venv/
+__pycache__
+firestore_key.json
+.streamlit/secrets.toml
