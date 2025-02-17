@@ -64,7 +64,7 @@ def get_all_messages():
     session = Session()
 
     try:
-        result = session.execute(text("SELECT * FROM public.educapro_chats;"))  # Agregar text()
+        result = session.execute(text("SELECT * FROM public.educapro_chats order by id;"))  # Agregar text()
         rows = result.fetchall()
     except Exception as e:
         st.error(f"Error al obtener mensajes: {e}")
@@ -135,7 +135,7 @@ search_chat_id = st.sidebar.text_input("Buscar chat por ID", "")
 # Filtrar los chat_ids basados en la fecha seleccionada y la búsqueda
 filtered_chat_ids = set()
 for msg in chat_history:
-    msg_date = msg["Date"].date()  # Extraer solo la fecha (sin la hora)
+    msg_date = msg["Date"].astimezone(ZoneInfo("America/Lima")).date()  # Extraer solo la fecha (sin la hora), en zona hora de Lima
     matches_date = msg_date == selected_date  # Coincide con la fecha seleccionada
     matches_search = search_chat_id.lower() in str(msg["ChatID"]).lower()  # Coincide con la búsqueda
 
