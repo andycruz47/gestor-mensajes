@@ -117,11 +117,13 @@ for row in rows:
     if isinstance(content, str):
         #content = re.sub(r"Mensaje del usuario:\s*", "", content, flags=re.IGNORECASE)
         #content = re.sub(r"Telefono del usuario:\s*\d+", "", content, flags=re.IGNORECASE).strip()
+        username = re.sub(r".*user name:\s*([^\n]+).*", r"\1", content, flags=re.DOTALL)
         content = re.sub(r".*message text or description:\s*", "", content, flags=re.DOTALL)
 
     chat_history.append({
          "ChatID": session_id,
          "Role": msg_type,
+         "Username": username,
          "Content": content,
          "Date": date_creation
     })
@@ -165,7 +167,9 @@ st.title("Gestor de mensajes | EducaPro")
 # Mostrar la conversación del chat seleccionado
 if current_chat_id:
     selected_chat = [msg for msg in chat_history if msg["ChatID"] == current_chat_id]
+    current_username = selected_chat[0]['Username']
     st.subheader(f"Teléfono: {current_chat_id}")
+    st.subheader(f"Nombre: {current_username}")
     
     for message in selected_chat:
         # Definir el prefijo según el rol: "humano:" para mensajes human y "ia:" para mensajes AI
