@@ -1,5 +1,5 @@
 import streamlit as st
-import os, re, hmac
+import re, hmac
 from dotenv import load_dotenv
 import sqlalchemy
 from sqlalchemy import text
@@ -40,17 +40,17 @@ if not check_password():
 # Función para conectarse a PostgreSQL en Railway
 def get_db_connection():
     """
-    Initializes a connection to a PostgreSQL database in Railway using Streamlit's secrets.
+    Initializes a connection to a PostgreSQL database in Supabase using Streamlit's secrets.
     """
     # Leer credenciales desde secrets.toml
-    db_user = st.secrets["postgresql"]["user"]
-    db_password = st.secrets["postgresql"]["password"]
-    db_host = st.secrets["postgresql"]["host"]
-    db_port = st.secrets["postgresql"]["port"]
-    db_name = st.secrets["postgresql"]["database"]
+    db_user = st.secrets["supabase"]["user"]
+    db_password = st.secrets["supabase"]["password"]
+    db_host = st.secrets["supabase"]["host"]
+    db_port = st.secrets["supabase"]["port"]
+    db_name = st.secrets["supabase"]["database"]
 
-    # Construcción de la URL de conexión en formato PostgreSQL
-    db_url = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
+    # Construcción de la URL de conexión en formato PostgreSQL con SSL obligatorio
+    db_url = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}?sslmode=require"
 
     # Crear la conexión con SQLAlchemy
     engine = sqlalchemy.create_engine(db_url, pool_pre_ping=True)
